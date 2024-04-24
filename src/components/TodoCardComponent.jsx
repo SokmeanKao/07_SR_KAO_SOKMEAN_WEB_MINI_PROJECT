@@ -3,7 +3,17 @@ import React from "react";
 import EditDeleteDropDownComponent from "./EditDeleteDropDownComponent";
 
 export default async function TodoCardComponent({ allTasks }) {
-  console.log("allTasksdd", allTasks);
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
+    const options = { month: "long", day: "numeric", year: "numeric" };
+    const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+      date
+    );
+    return formattedDate;
+  }
   return (
     <div>
       {allTasks?.data?.map((task) => (
@@ -13,7 +23,7 @@ export default async function TodoCardComponent({ allTasks }) {
         >
           <div className="p-5">
             <div className="flex justify-between">
-              <p>Slack Integration</p>
+              <p>{task?.taskTitle}</p>
               <div className="absolute top-2 right-3">
                 {/* <Image
                src={"/assets/icons/tabler_dots.svg"}
@@ -25,10 +35,10 @@ export default async function TodoCardComponent({ allTasks }) {
               </div>
             </div>
 
-            <p className="text-gray">Description</p>
+            <p className="text-gray">{task?.description}</p>
             <div className="flex justify-between items-center mt-5">
               <div className="bg-bgTag text-colorTag py-1 px-5 rounded-lg font-bold">
-                Development
+                {task?.tag}
               </div>
               <div className="rounded-full w-5 h-5 bg-todo"></div>
             </div>
@@ -42,7 +52,7 @@ export default async function TodoCardComponent({ allTasks }) {
               height={20}
               alt="calendar icon"
             />
-            <p className="text-gray">March 1, 2024</p>
+            <p className="text-gray">{formatDate(task?.dueDate)}</p>
           </div>
         </div>
       ))}

@@ -7,7 +7,19 @@ const TodoListComponent = ({ task }) => {
   const timestamp = new Date(task.dueDate);
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const dayOfWeek = days[timestamp.getDay()];
-  console.log(dayOfWeek);
+  function getStatusMeaning(status) {
+    if (status === 1) {
+        return "todo";
+    } else if (status === 2) {
+        return "working on";
+    } else if (status === 3) {
+        return "checking";
+    } else if (status === 4) {
+        return "completed";
+    } else {
+        return "unknown"; // or handle invalid status
+    }
+}
   return (
     <div>
       <div key={task.taskId} className=" h-32 bg-green-500 mt-5 rounded-lg">
@@ -22,7 +34,7 @@ const TodoListComponent = ({ task }) => {
           </div>
           <div className="w-2/12 flex flex-col justify-end">
             <div className="bg-white rounded-lg  text-center">
-              <p>Todo</p>
+              <p>{getStatusMeaning(task.status)}</p>
             </div>
           </div>
         </div>
