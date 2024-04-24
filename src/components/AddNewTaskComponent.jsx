@@ -1,9 +1,10 @@
+import { handlerTask } from "@/actions/dashboardAction";
 import Image from "next/image";
 import React from "react";
 
-export default function AddNewTaskComponent() {
+export default function AddNewTaskComponent({ workId }) {
   return (
-    <div>
+    <div className="pr-20 pb-10">
       <label htmlFor="my_modal_7" className="cursor-pointer">
         <div className="flex items-center gap-3">
           <div className="bg-workingOn rounded-3xl text-white p-1.5 flex gap-2 items-center w-32 h-10 justify-center">
@@ -43,8 +44,9 @@ export default function AddNewTaskComponent() {
             </label>
           </div>
 
-          <form className="space-y-1">
+          <form className="space-y-1" action={handlerTask}>
             {/* title */}
+            <input type="hidden" name="workSpaceId" value={workId}/>
             <h3 className="text-lg">Title</h3>
             <input
               placeholder="Insert your task title"

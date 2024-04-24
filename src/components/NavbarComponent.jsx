@@ -1,11 +1,21 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 export default function NavbarComponent() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const _handleBoard = () => {
+    router.push("/todo-board");
+    router.refresh();
+  };
+  const _handleList = () => {
+    router.push("/todo-list");
+    router.refresh();
+  };
   return (
     <nav className={` border-b border-b-gray relative`}>
       <div className="flex items-center py-4 pl-4 pr-10">
@@ -128,12 +138,15 @@ export default function NavbarComponent() {
             </div>
             <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium rounded-3xl bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
-                <Link
-                  href="/todo-list"
+                <button
+                  type="button"
+                  onClick={_handleList}
+                  id="/todo-list"
+                  // href="/todo-list"
                   className={` flex gap-2 py-2 px-3 rounded md:bg-transparent md:p-0 md:dark:text-blue-500`}
-                  aria-current="page"
+                  // aria-current="page"
                 >
-                  {pathname === "/todo-list" ? (
+                  {pathname.startsWith("/todo-list") ? (
                     <Image
                       src="/assets/icons/list-filled-blue.svg"
                       width={18}
@@ -149,19 +162,24 @@ export default function NavbarComponent() {
 
                   <span
                     className={`${
-                      pathname === "/todo-list" ? "text-blue-700 " : "text-gray"
+                      pathname.startsWith("/todo-list")
+                        ? "text-blue-700 "
+                        : "text-gray"
                     } text-lg`}
                   >
                     List
                   </span>
-                </Link>
+                </button>
               </li>
 
               <li>
-                <Link
-                  href="/todo-board"
+                <button
+                  type="button"
+                  onClick={_handleBoard}
+                  id="todo-board"
+                  // href="/todo-board"
                   className=" flex gap-2 py-2 px-3 text-gray rounded md:bg-transparent  md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
+                  // aria-current="page"
                 >
                   {pathname === "/todo-board" ? (
                     <Image
@@ -184,11 +202,17 @@ export default function NavbarComponent() {
                   >
                     Board
                   </span>
-                </Link>
+                </button>
               </li>
             </ul>
-            
-            <div className={`${pathname === "/todo-list" ? "border-b-2 border-b-blue-700 absolute bottom-0 w-20 left-2" : "border-b-2 border-b-blue-700 absolute bottom-0 w-90 left-24"}`}></div>
+
+            <div
+              className={`${
+                pathname === "/todo-list"
+                  ? "border-b-2 border-b-blue-700 absolute bottom-0 w-20 left-2"
+                  : "border-b-2 border-b-blue-700 absolute bottom-0 w-90 left-24"
+              }`}
+            ></div>
           </div>
         </div>
       </div>

@@ -2,8 +2,17 @@ import Image from "next/image";
 import React from "react";
 import EditDeleteDropDownComponent from "./EditDeleteDropDownComponent";
 import WorkspacePopupComponent from "./WorkspacePopupComponent";
+import { getAllWorkspaces } from "@/service/dashboard.service";
+import Link from "next/link";
+import { headers } from "next/headers";
 
-export default function SidebarComponent() {
+export default async function SidebarComponent() {
+  const workspace = await getAllWorkspaces();
+  const headerList = headers();
+  const url = headerList.get("x-current-path");
+
+  console.log("Url path", url);
+
   return (
     <div className="pl-10 mt-6 h-screen">
       <div className="flex justify-between">
@@ -18,14 +27,17 @@ export default function SidebarComponent() {
       </div>
 
       {/* each workspace */}
-      <div className="flex items-center mt-5 w-full">
-        <div className="rounded-full w-4 h-4 bg-todo"></div>
-        <div className="flex justify-between w-full pl-3">
-          <p>HRD Design</p>
-
-          <EditDeleteDropDownComponent />
+      {workspace.data.map((w) => (
+        <div key={w?.workSpaceId} className="flex items-center mt-5 w-full">
+          <div className="rounded-full w-4 h-4 bg-todo"></div>
+          <div className="flex justify-between w-full pl-3">
+            <Link href={`${url}/${w?.workSpaceId}?sidebar=workspace`}>
+              <p className=" font-bold">{w?.workspaceName}</p>
+            </Link>
+            <EditDeleteDropDownComponent workSpaceId={w?.workSpaceId} />
+          </div>
         </div>
-      </div>
+      ))}
 
       {/* favorite*/}
       <div className="flex justify-between mt-10">
@@ -35,12 +47,18 @@ export default function SidebarComponent() {
       </div>
 
       {/* each favorite workspace */}
-      <div className="flex items-center mt-5 w-full">
-        <div className="rounded-full w-4 h-4 bg-workingOn"></div>
-        <div className="flex justify-between w-full pl-3">
-          <p>GKS Scholarship</p>
-        </div>
-      </div>
+      {workspace.data.map((w) => {
+        return w.isFavorite ? (
+          <div key={w.workSpaceId} className="flex items-center mt-5 w-full">
+            <div className="rounded-full w-4 h-4 bg-workingOn"></div>
+            <div className="flex justify-between w-full pl-3">
+              <p>{w.workspaceName}</p>
+            </div>
+          </div>
+        ) : (
+          " "
+        );
+      })}
     </div>
   );
 }

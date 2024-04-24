@@ -1,7 +1,10 @@
+"use client";
+
+import { deleteWorkSpaceAction } from "@/actions/dashboardAction";
 import Image from "next/image";
 import React from "react";
 
-export default function EditDeleteDropDownComponent() {
+export default function EditDeleteDropDownComponent({workSpaceId}) {
   return (
     <details className="dropdown">
       <summary className=" btn bg-white shadow-none border-0 p-0 h-0 min-h-0">
@@ -17,7 +20,7 @@ export default function EditDeleteDropDownComponent() {
           <a>Edit</a>
         </li>
         <li>
-          <a>Delete</a>
+          <button onClick={() => deleteWorkSpaceAction(workSpaceId)}>Delete</button>
         </li>
       </ul>
     </details>
